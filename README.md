@@ -4,12 +4,13 @@ provided in a 1-based region file. It works for CRAM and BAMs. This has not been
 
 ### Usage
 
-After `cargo build --release`
+After running `cargo build --release` :
 
 `./target/release/pileup_region <region_file> <cram> <fasta> `
 
 The `<region file>` should have the following columns: `chr, pos, ref, alt, aa_change` . You 
-can leave `aa_change` as blank or a dummy value if don't need it. 
+can leave `aa_change` as blank or a dummy value if you don't need it. The column headers next to
+match these exactly. 
 
 ### Install
 cargo build --release
