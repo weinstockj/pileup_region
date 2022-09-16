@@ -4,9 +4,11 @@ provided in a 1-based region file. It works for CRAM and BAMs. This has not been
 
 ### Usage
 
-`./pileup_counter <region_file> <cram> <fasta> `
+After `cargo build --release`
 
-The `<region file>` should have the following columns: `chrom, pos, ref, alt, aa_change` . You 
+`./target/release/pileup_region <region_file> <cram> <fasta> `
+
+The `<region file>` should have the following columns: `chr, pos, ref, alt, aa_change` . You 
 can leave `aa_change` as blank or a dummy value if don't need it. 
 
 ### Install
