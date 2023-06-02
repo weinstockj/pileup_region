@@ -12,10 +12,17 @@ The `<region file>` should have the following columns: `chr, pos, ref, alt, aa_c
 can leave `aa_change` as blank or a dummy value if you don't need it. The column headers need to
 match these exactly. 
 
-An example file is provided here for the U2AF1 locus (`u2af1_vars.txt`) 
+An example file is provided here for the U2AF1 locus (`u2af1_vars.txt`) where the 
+coordinates are for GRCh38. Note that the genome build of this file must match that of the 
+BAM/CRAM. 
+
+The fasta file should be the same one used to align the BAM/CRAMs. 
 
 ### Install
-cargo build --release
+After cloning this repository, and installing the [Rust programming language](https://www.rust-lang.org/tools/install), run:
+`cargo build --release`
+
+It may take a few minutes to compile depending on your system. 
 
 ### Authors
 Contact [Josh Weinstock](https://github.com/weinstockj)
