@@ -33,6 +33,8 @@ fn main() {
     let mut bam_reader = bam::IndexedReader::from_path(&cram_path).unwrap();
     let bam_header = bam_reader.header().clone();
 
+    let is_bam_file = cram_path.contains("bam");
+
     bam_reader.set_reference(fasta_path).unwrap();
 
     /* let max_read_length = 151; */
@@ -47,6 +49,7 @@ fn main() {
         .from_writer(io::BufWriter::new(io::stdout()));
 
     for (_i, record) in pos_reader.deserialize().enumerate() {
+        
         let record: PosRecord = record.unwrap();
 
         // pileup over all covered ites
@@ -54,12 +57,19 @@ fn main() {
 
 
         let start = (record.pos - 1) as u64; // bam is 0-based, region_path is 1 based
-        bam_reader.fetch(tid, start, start).unwrap();
+                                             //
+        if is_bam_file {
+            bam_reader.fetch(tid, start, start + 1).unwrap(); // bam has half-closed-half-open
+        } else {
+            bam_reader.fetch(tid, start, start).unwrap(); // cram file has closed intervals?
+        }
 
         let mut alt_count = 0;
 
+        // println!("here 1.1, tid = {}, start = {}", tid, start);
         // used https://github.com/rust-bio/rust-bio-tools/blob/81eb3dc9655a6bcd0ed50b3ee9cf28ecaddcb778/src/bam/depth.rs as reference
         for p in bam_reader.pileup() {
+            // println!("p = {:?}", p);
             let pileup = p.unwrap();
 
             if pileup.pos() == record.pos - 1 {
