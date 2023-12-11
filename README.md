@@ -1,6 +1,8 @@
 ## Pileup region
 This is a simple rust application for counting the number of alt-reads and depths at locations
 provided in a 1-based region file. It works for CRAM and BAMs. This has not been tested extensively. 
+This application was developed to call U2AF1 mutations in TOPMed for the 
+Weinstock* & Gopakumar* et al., Nature, 2023 manuscript. 
 
 ### Usage
 
