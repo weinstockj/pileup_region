@@ -1,31 +1,39 @@
-FROM ubuntu:22.04 AS builder
-
-WORKDIR /usr/src/pileup_region
-COPY . .
-
-# Install dependencies for rust-htslib
-RUN apt-get update && apt-get install -y \
-    pkg-config \
-    libssl-dev \
-    zlib1g-dev \
-    libcurl4-openssl-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Build release binary
-RUN cargo build --release
-
-# Create a smaller runtime image
 FROM ubuntu:22.04
 
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y \
-    libssl1.1 \
-    zlib1g \
-    libcurl4 \
-    && rm -rf /var/lib/apt/lists/*
+# Update package lists
+RUN apt-get update && apt-get upgrade -y
 
-# Copy the compiled binary
-COPY --from=builder /usr/src/pileup_region/target/release/pileup_region /usr/local/bin/
+# Install build dependencies for Rust + parallel
+RUN apt-get install -y \
+    curl \
+    git \
+    build-essential \
+    pkg-config \
+    parallel \
+    zip unzip \
+    libssl-dev 
 
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Set PATH for Rust
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+RUN apt-get install libclang-dev -y
+
+
+# Copy your Rust project directory
+WORKDIR /app
 # Set the entrypoint
-ENTRYPOINT ["pileup_region"]
+# Copy your project here (replace with your actual copy command)
+COPY . .
+
+# Build your Rust project (replace with your actual build command)
+RUN cargo build --release
+
+ENV PATH="${PATH}:/app/target/release"
+# Final image
+
+ENV SHELL=/bin/bash
+
+CMD ["/bin/bash"]
