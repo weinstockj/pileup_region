@@ -21,6 +21,16 @@ BAM/CRAM.
 The fasta file should be the same one used to align the BAM/CRAMs. 
 
 ### Install
+
+#### Using Docker
+A pre-built Docker image is available at [jweinstk/pileup_region](https://hub.docker.com/r/jweinstk/pileup_region) on Docker Hub:
+
+```bash
+docker pull jweinstk/pileup_region
+docker run -v /path/to/your/data:/data jweinstk/pileup_region pileup_region <region_file> <cram> <fasta>
+```
+
+#### Building from source
 After cloning this repository, and installing the [Rust programming language](https://www.rust-lang.org/tools/install), run:
 `cargo build --release`
 
